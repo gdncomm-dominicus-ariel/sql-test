@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Intern SQL Practice</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='14' font-size='14'%3E%F0%9F%97%84%EF%B8%8F%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <h1>Intern SQL Practice</h1>
+      <p>Write SQL, press Run, then read the table. The database runs inside your browser. A page reload resets the database.</p>
+    </header>
+
+    <!-- 1. Schema reference -->
+    <section class="card">
+      <h2>Schema</h2>
+      <div class="schema-grid">
+        <div class="table-box">
+          <div class="table-name">movies</div>
+          <ul>
+            <li class="is-key"><span class="col-name">id</span><span class="col-type">INTEGER</span></li>
+            <li><span class="col-name">title</span><span class="col-type">TEXT</span></li>
+            <li><span class="col-name">release_year</span><span class="col-type">INTEGER</span></li>
+            <li><span class="col-name">genre</span><span class="col-type">TEXT</span></li>
+            <li><span class="col-name">director</span><span class="col-type">TEXT</span></li>
+            <li><span class="col-name">runtime_min</span><span class="col-type">INTEGER</span></li>
+            <li><span class="col-name">rating</span><span class="col-type">REAL</span></li>
+            <li><span class="col-name">box_office_earnings</span><span class="col-type">INTEGER</span></li>
+          </ul>
+        </div>
+        <div class="table-box">
+          <div class="table-name">actors</div>
+          <ul>
+            <li class="is-key"><span class="col-name">id</span><span class="col-type">INTEGER</span></li>
+            <li><span class="col-name">name</span><span class="col-type">TEXT</span></li>
+            <li><span class="col-name">birth_country</span><span class="col-type">TEXT</span></li>
+            <li><span class="col-name">birth_year</span><span class="col-type">INTEGER</span></li>
+          </ul>
+        </div>
+        <div class="table-box">
+          <div class="table-name">movie_cast</div>
+          <ul>
+            <li class="is-fk"><span class="col-name">movie_id</span><span class="col-type">INTEGER</span></li>
+            <li class="is-fk"><span class="col-name">actor_id</span><span class="col-type">INTEGER</span></li>
+            <li><span class="col-name">character_name</span><span class="col-type">TEXT</span></li>
+            <li><span class="col-name">is_lead</span><span class="col-type">INTEGER 1/0</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Query input -->
+    <section class="card">
+      <h2>Query</h2>
+      <div id="editor-host"></div>
+      <div class="controls">
+        <button id="run-btn" class="primary" type="button">Run</button>
+        <button id="reset-btn" type="button">Reset DB</button>
+        <span class="hint" id="run-hint"></span>
+      </div>
+    </section>
+
+    <!-- 3. Results -->
+    <section class="card">
+      <h2>Results</h2>
+      <pre id="status"></pre>
+      <div id="results"></div>
+    </section>
+
+    <footer>
+      Fictional data. Junction table is <code>movie_cast</code> (not <code>cast</code>, which SQLite reserves).
+    </footer>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
