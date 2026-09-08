@@ -16,15 +16,14 @@
   var els = {
     editorHost: document.getElementById("editor-host"),
     run: document.getElementById("run-btn"),
-    reset: document.getElementById("reset-btn"),
     status: document.getElementById("status"),
     results: document.getElementById("results"),
     runHint: document.getElementById("run-hint")
   };
 
   var db = null;          // the sql.js Database
-  var SQLModule = null;   // the initialised sql.js module, kept for "Reset DB"
-  var seedSql = "";       // text of seed.sql, kept for "Reset DB"
+  var SQLModule = null;   // the initialised sql.js module
+  var seedSql = "";       // text of seed.sql
   var getQuery = null;    // function -> current editor text
   var setQuery = null;    // function(text) -> set editor text
 
@@ -131,6 +130,30 @@
     if (db) { db.close(); }
     db = new SQLModule.Database();
     db.run(seedSql);
+    // Make the connection read-only. "PRAGMA query_only = true" tells SQLite to
+    // reject every write: INSERT, UPDATE, DELETE, CREATE, DROP, ALTER.
+    db.run("PRAGMA query_only = true;");
+  }
+
+  // Allow only read statements from the input box. This runs before the engine,
+  // so the candidate gets a clear message instead of a raw SQLite write error.
+  // The leading keyword of every statement must be SELECT, WITH, EXPLAIN or VALUES.
+  function checkReadOnly(sql) {
+    var cleaned = sql
+      .replace(/--[^\n]*/g, " ")        // line comments
+      .replace(/\/\*[\s\S]*?\*\//g, " "); // block comments
+    var statements = cleaned.split(";");
+    var allowed = /^(SELECT|WITH|EXPLAIN|VALUES)\b/i;
+    for (var i = 0; i < statements.length; i++) {
+      var stmt = statements[i].trim();
+      if (stmt === "") { continue; }
+      if (!allowed.test(stmt)) {
+        var firstWord = (stmt.split(/\s+/)[0] || stmt).toUpperCase();
+        return "This tool runs read-only queries only. A statement that starts with \""
+          + firstWord + "\" is not allowed. Start every statement with SELECT or WITH.";
+      }
+    }
+    return null;
   }
 
   function runQuery() {
@@ -143,6 +166,12 @@
     els.results.innerHTML = "";
     if (!sql) {
       showError("Type a SQL query first.");
+      return;
+    }
+
+    var readOnlyProblem = checkReadOnly(sql);
+    if (readOnlyProblem) {
+      showError(readOnlyProblem);
       return;
     }
 
@@ -228,21 +257,10 @@
     }
   }
 
-  function resetDatabase() {
-    try {
-      seedDatabase();
-      showOk("Database reset to the original seed data.");
-      els.results.innerHTML = "";
-    } catch (err) {
-      showError("Could not reset the database: " + err.message);
-    }
-  }
-
   // ---- boot ------------------------------------------------------------
 
   function boot() {
     els.run.disabled = true;
-    els.reset.disabled = true;
     els.runHint.textContent = runComboLabel;
 
     var editorReady = setupEditor();
@@ -265,10 +283,8 @@
       SQLModule = values[2];
       seedDatabase();
       els.run.disabled = false;
-      els.reset.disabled = false;
       els.run.addEventListener("click", runQuery);
-      els.reset.addEventListener("click", resetDatabase);
-      showOk("Ready. " + describeSeed() + " " + runComboLabel + ".");
+      showOk("Ready, read-only. " + describeSeed() + " " + runComboLabel + ".");
     }).catch(function (err) {
       showError("Startup failed: " + err.message
         + "\nCheck the network tab. The site needs cdnjs.cloudflare.com and a static server (not file://).");

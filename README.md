@@ -1,12 +1,21 @@
 # Intern SQL Practice
 
-This project is a single static web page. A candidate writes SQL on the page and
-runs the SQL against a small SQLite database. The database runs inside the
-browser. There is no backend, no login, and no stored data. A page reload resets
-the database.
+This project is a single static web page. A candidate writes a SELECT query on
+the page and runs the query against a small SQLite database. The database runs
+inside the browser. There is no backend, no login, and no stored data. A page
+reload restores the original data.
 
 The SQL engine is [sql.js](https://github.com/sql-js/sql.js). sql.js is SQLite
 compiled to WebAssembly. The page loads sql.js from the cdnjs CDN at runtime.
+
+## Read-only
+
+The database is read-only. After the seed runs, `app.js` sends
+`PRAGMA query_only = true`, so SQLite rejects every write: INSERT, UPDATE,
+DELETE, CREATE, DROP, and ALTER. `app.js` also checks the input box before the
+engine runs, and it rejects any statement that does not start with SELECT, WITH,
+EXPLAIN, or VALUES. So there is no reset control. A page reload is the only way
+to rebuild the database, and a reload is never needed for a read-only query.
 
 ## Files
 
