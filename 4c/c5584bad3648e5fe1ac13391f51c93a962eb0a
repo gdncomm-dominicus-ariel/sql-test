@@ -1,0 +1,31 @@
+README.md
+  s_39cc9c2d26323c::t_494bc5c6b658dd 1-105
+app.js
+  s_39cc9c2d26323c::t_23d85c7cc8efd2 1-283
+config.js
+  s_39cc9c2d26323c::t_887b360fa05af3 1-17
+index.html
+  s_39cc9c2d26323c::t_e51722832598a8 1-81
+questions.md
+  s_39cc9c2d26323c::t_07fb4c261a637f 1-227
+seed.sql
+  s_39cc9c2d26323c::t_51e0533fc51e5b 1-169
+styles.css
+  s_39cc9c2d26323c::t_0a36cf1395367a 1-266
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.11",
+  "base_commit_sha": "4cc5584bad3648e5fe1ac13391f51c93a962eb0a",
+  "prompts": {},
+  "sessions": {
+    "s_39cc9c2d26323c": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "s_39cc9c2d26323c",
+        "model": "unknown"
+      },
+      "human_author": "dominicus.ariel <dominicus.ariel@gdn-commerce.com>"
+    }
+  }
+}
