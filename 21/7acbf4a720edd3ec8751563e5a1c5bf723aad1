@@ -1,0 +1,23 @@
+README.md
+  s_0dba13f55a6f46::t_41db9dcff51e82 3-6,11-19
+app.js
+  s_0dba13f55a6f46::t_824ee111224ae2 25-26,133-156,172-177,287
+index.html
+  s_0dba13f55a6f46::t_68f88909cd1b7e 14
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.11",
+  "base_commit_sha": "217acbf4a720edd3ec8751563e5a1c5bf723aad1",
+  "prompts": {},
+  "sessions": {
+    "s_0dba13f55a6f46": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "s_0dba13f55a6f46",
+        "model": "unknown"
+      },
+      "human_author": "dominicus.ariel <dominicus.ariel@gdn-commerce.com>"
+    }
+  }
+}
