@@ -13,5 +13,5 @@ window.SQL_PRACTICE_CONFIG = {
   codeMirrorVersion: "5.65.16",
 
   // SQL shown in the editor on first load.
-  starterQuery: "SELECT title, release_year, genre, rating\nFROM movies\nWHERE rating >= 8.0\nORDER BY rating DESC;"
+  starterQuery: ""
 };
