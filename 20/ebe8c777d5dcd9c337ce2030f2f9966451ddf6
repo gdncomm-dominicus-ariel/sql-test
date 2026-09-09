@@ -1,0 +1,19 @@
+config.js
+  s_a72985ac25a9b8::t_42bc21045da734 16
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.11",
+  "base_commit_sha": "20ebe8c777d5dcd9c337ce2030f2f9966451ddf6",
+  "prompts": {},
+  "sessions": {
+    "s_a72985ac25a9b8": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "s_a72985ac25a9b8",
+        "model": "unknown"
+      },
+      "human_author": "dominicus.ariel <dominicus.ariel@gdn-commerce.com>"
+    }
+  }
+}
