@@ -156,6 +156,26 @@
     return null;
   }
 
+  // Strip comments and string literals, so the checks below do not match text
+  // inside a quoted value like 'a == b'.
+  function stripCommentsAndStrings(sql) {
+    return sql
+      .replace(/--[^\n]*/g, " ")
+      .replace(/\/\*[\s\S]*?\*\//g, " ")
+      .replace(/'(?:[^']|'')*'/g, "''")
+      .replace(/"(?:[^"]|"")*"/g, '""');
+  }
+
+  // SQLite accepts "==" as a non-standard alias for "=". Reject it here, so a
+  // candidate must use standard SQL equality.
+  function checkNoDoubleEquals(sql) {
+    var stripped = stripCommentsAndStrings(sql);
+    if (/==/.test(stripped)) {
+      return "\"==\" is not standard SQL. Use a single \"=\" for equality.";
+    }
+    return null;
+  }
+
   function runQuery() {
     if (!db) {
       showError("Database is not ready yet. Wait a moment and try again.");
@@ -172,6 +192,12 @@
     var readOnlyProblem = checkReadOnly(sql);
     if (readOnlyProblem) {
       showError(readOnlyProblem);
+      return;
+    }
+
+    var doubleEqualsProblem = checkNoDoubleEquals(sql);
+    if (doubleEqualsProblem) {
+      showError(doubleEqualsProblem);
       return;
     }
 
