@@ -1,0 +1,21 @@
+app.js
+  s_c10a46f8815fb0::t_08e3ff72d399b7 159-178,198-200,202
+  s_c10a46f8815fb0::t_943cd62700d131 201
+  s_c10a46f8815fb0::t_b5a7c7118f2b8c 203
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.11",
+  "base_commit_sha": "500a2bb86993b962f7c9d1b8793098bc5cd06c58",
+  "prompts": {},
+  "sessions": {
+    "s_c10a46f8815fb0": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b59b8e73-74c8-4e20-9ead-7ea36abfe62f",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "dominicus.ariel <dominicus.ariel@gdn-commerce.com>"
+    }
+  }
+}
