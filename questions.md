@@ -225,3 +225,75 @@ SELECT title, genre FROM movies WHERE box_office_earnings > 300;
 Returns 10 rows. `Ashfall Protocol`, `Interstellar`, `Silence`, `The Last
 Cartographer`, and `The Salt Wife` have a runtime above 150 minutes. The other
 movies match the earnings filter.
+
+---
+
+## Subqueries (5)
+
+### S1. Movies above average rating
+Show the title and rating of every movie with a rating above the overall
+average rating.
+
+```sql
+SELECT title, rating FROM movies
+WHERE rating > (SELECT AVG(rating) FROM movies);
+```
+Returns 12 rows. The average rating across all movies is near 7.89.
+
+### S2. Actors who never had a lead role
+Show the name of every actor who appears in `movie_cast`, but never with
+`is_lead = 1`.
+
+```sql
+SELECT name FROM actors a
+WHERE a.id NOT IN (SELECT actor_id FROM movie_cast WHERE is_lead = 1);
+```
+Returns 4 rows: Danil Roshkov, Jon Hamm, Jessica Chastain, Liam Neeson.
+
+### S3. Directors whose every movie rates above 7
+Show the name of every director where every movie by that director has a
+rating above 7.0. Use `NOT EXISTS`, not `GROUP BY` with `HAVING`.
+
+```sql
+SELECT DISTINCT director FROM movies m1
+WHERE NOT EXISTS (
+  SELECT 1 FROM movies m2
+  WHERE m2.director = m1.director AND m2.rating <= 7.0
+);
+```
+Returns 7 rows: Ava Renner, Marcus Vint, Piotr Salk, Ingrid Vale, Joseph
+Kosinski, Christopher Nolan, Martin Scorsese. Kaito Brenner does not appear,
+because the only movie by Kaito Brenner has a rating of exactly 7.0. Dahlia
+Fox, Leo Marsh, and Nina Corvo do not appear, because each has at least one
+movie rated 7.0 or below.
+
+### S4. Highest-earning movie per genre
+Show the title, genre, and earnings of the movie with the highest earnings
+inside each genre. Use a correlated subquery, not a `JOIN` on a grouped
+subquery.
+
+```sql
+SELECT title, genre, box_office_earnings FROM movies m
+WHERE box_office_earnings = (
+  SELECT MAX(box_office_earnings) FROM movies m2 WHERE m2.genre = m.genre
+);
+```
+Returns 7 rows, one per genre: `Top Gun: Maverick` (Action), `Little
+Vandals` (Comedy), `The Last Cartographer` (Drama), `Sunflower Autopsy`
+(Horror), `Rust and Roses` (Romance), `Interstellar` (Sci-Fi), `Ticker`
+(Thriller).
+
+### S5. Actors who share a movie with Tom Cruise
+Show the distinct name of every actor who appeared in the same movie as
+`Tom Cruise`, excluding Tom Cruise.
+
+```sql
+SELECT DISTINCT a.name FROM actors a
+JOIN movie_cast mc ON mc.actor_id = a.id
+WHERE mc.movie_id IN (
+  SELECT movie_id FROM movie_cast mc2
+  JOIN actors a2 ON a2.id = mc2.actor_id
+  WHERE a2.name = 'Tom Cruise'
+) AND a.name != 'Tom Cruise';
+```
+Returns 2 rows: Miles Teller, Jon Hamm.
