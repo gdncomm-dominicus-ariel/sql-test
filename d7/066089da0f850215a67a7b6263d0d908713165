@@ -1,0 +1,19 @@
+questions.md
+  s_41c8fa101438c3::t_82c03adf264865 228-299
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.11",
+  "base_commit_sha": "d7066089da0f850215a67a7b6263d0d908713165",
+  "prompts": {},
+  "sessions": {
+    "s_41c8fa101438c3": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "b4b52058-3088-4ecc-9803-b4d79c899561",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "dominicus.ariel <dominicus.ariel@gdn-commerce.com>"
+    }
+  }
+}
